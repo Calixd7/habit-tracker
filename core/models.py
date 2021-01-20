@@ -19,4 +19,7 @@ class Record (models.Model):
     habit = models.ForeignKey('Habit', related_name = 'records', on_delete=models.CASCADE)
     date = models.DateField(auto_now=True)
     
-    UniqueConstraint(fields=['habit', 'date'], name='unique_habit ') ]
+    class Meta:
+    constraints = [ 
+        UniqueConstraint(fields=['habit', 'date'], name='unique_habit ')
+         ]

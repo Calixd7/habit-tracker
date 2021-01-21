@@ -15,11 +15,11 @@ class Habit (models.Model):
 
 
 class Record (models.Model):
-    number = models.IntegerField()
-    habit = models.ForeignKey('Habit', related_name = 'records', on_delete=models.CASCADE)
+    outcome = models.IntegerField()
+    habit = models.ForeignKey(Habit, related_name = 'records', on_delete=models.CASCADE)
     date = models.DateField(auto_now=True)
     
     class Meta:
-    constraints = [ 
-        UniqueConstraint(fields=['habit', 'date'], name='unique_habit ')
+        constraints = [ 
+         UniqueConstraint(fields=['habit', 'date'], name='unique_habit ')
          ]

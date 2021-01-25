@@ -37,12 +37,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # 'django.contrib.sites',
+    'registration',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
    
 
     # Third-party
@@ -53,6 +56,9 @@ INSTALLED_APPS = [
     # Project-specific
     'core',
 ]
+
+ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
+REGISTRATION_AUTO_LOGIN = True # Automatically log the user in.
 
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
@@ -140,8 +146,7 @@ INTERNAL_IPS = [
     '127.0.0.1',
     # ...
 ]
-LOGIN_REDIRECT_URL = '/account/login'
-LOGIN_URL = "/account/login/"
+
 
 
 import django_on_heroku

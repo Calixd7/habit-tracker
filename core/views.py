@@ -6,18 +6,18 @@ from django.contrib.auth.decorators import login_required
    
 
 
-# @login_required
+@login_required
 def habit_list(request):
     habits = Habit.objects.all()
-    return render(request, "core/habit_list.html", {"habits": habits})
+    return render(request, "habits/habit_list.html", {"habits": habits})
 
-# @login_required
+@login_required
 def habit_detail(request, pk):
-    habit = get_object_or_404 (habits, pk=pk)
+    habit = get_object_or_404 (Habit, pk=pk)
 
     return render(request, "habits/habit_detail.html", {"habit": habit})
 
-# @login_required
+@login_required
 def habit_create(request):
     if request.method == "GET":
         form = HabitForm()
@@ -26,19 +26,22 @@ def habit_create(request):
         form = HabitForm(data=request.POST)
 
         if form.is_valid():
-            habit = form.save(commit=False)
             
-
-            form.save()
+            
+            
+        
+            habit = form.save(commit=False)
+            habit.user = request.user
+            habit.save()
 
             success(request, "Your Habit was created!")
             return redirect(to='habit_list')
 
-    return render(request, "core/habit_create.html", {"form": form})
+    return render(request, "habits/habit_create.html", {"form": form})
 
-# @login_required
+@login_required
 def habit_update(request, pk):
-    habit = get_object_or_404(habits, pk=pk)
+    habit = get_object_or_404(habit, pk=pk)
 
     if request.method == 'GET':
         form = HabitForm(instance=habit)
@@ -51,22 +54,22 @@ def habit_update(request, pk):
             success(request, 'Your habits has been updated!')
             return redirect(to='habit_list')
 
-    return render(request, 'core/habit_update.html', {'form': form})
+    return render(request, 'habits/habit_update.html', {'form': form})
 
-# @login_required
+@login_required
 def habit_delete(request, pk):
     if request.method == 'GET':
-        return render(request, 'core/habit_delete.html')
+        return render(request, 'habits/habit_delete.html')
 
     else:
-        habit = get_object_or_404(habits.all(), pk=pk)
+        habit = get_object_or_404(habit.all(), pk=pk)
         habit.delete()
         success(request, 'Your Habit has been deleted!')
         return redirect(to='habit_list')
 
-# @login_required
+@login_required
 def record_create(request, habit_pk):
-    habit = get_object_or_404(habits, pk=habit_pk)
+    habit = get_object_or_404(habit, pk=habit_pk)
 
     if request.method == "GET":
         form = RecordForm()
@@ -78,9 +81,9 @@ def record_create(request, habit_pk):
             record.habit = habit_pk
             record.save()
             return redirect("habit_detail", pk=habit_pk)
-    return render(request, "core/record_create.html", {"form": form})
+    return render(request, "habits/record_create.html", {"form": form})
 
-# @login_required   
+@login_required   
 def record_update(request, record_pk):
     record = get_object_or_404(Record.objects.filter(), pk=record_pk)
     if request.method == "GET":
@@ -90,9 +93,9 @@ def record_update(request, record_pk):
         if form.is_valid():
             record = record.save()
             return redirect("record_detail", pk=record.pk)
-    return render(request, "core/record_create.html", {"record": record, "form": form})
+    return render(request, "habits/record_create.html", {"record": record, "form": form})
 
-# @login_required
+@login_required
 def record_delete(request, record_pk):
     record = get_object_or_404(Record.objects.filter(), pk=record_pk)
     record.delete()

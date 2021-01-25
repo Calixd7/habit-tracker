@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3>{{habit.subject}}</h3>
+<table>
+    {% for record in records %}
+        <tr>
+            <td>{{record.date}}</td>
+            <td>{{record.amount}}</td>
+        </tr>
+     <p><a href = "{% url 'record_update' pk=record.pk %}">Edit Record</a></p>
+     <p><a href = "{% url 'record_delete' pk=record.pk %}">Delete Record</a></p>
+
+    {% endfor %}
+    <p><a href="{% url 'record_create' habit_pk=habit.pk %}">Add Record</a></p>
+    <p><a href = "{% url 'habit_update' pk=habit.pk %}">Edit Habit</a></p>
+    <p><a href = "{% url 'habit_delete' pk=habit.pk %}">Delete Habit</a></p>
+
+{% endblock %}

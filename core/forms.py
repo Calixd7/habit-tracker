@@ -8,6 +8,7 @@ class HabitForm(forms.ModelForm):
         fields = [
             'name',
             'target',
+            'noun',
         ]
 
 class RecordForm(forms.ModelForm):

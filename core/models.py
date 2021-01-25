@@ -10,6 +10,7 @@ class Habit (models.Model):
     user = models.ForeignKey(User, related_name="habits", on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     target = models.IntegerField(blank=True, null=True)
+    noun = models.CharField(max_length=255) 
     date = models.DateField(auto_now=True)
 
 

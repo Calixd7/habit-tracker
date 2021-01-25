@@ -1,55 +1,72 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Habit, Record
 from .forms import HabitForm, RecordForm
+from django.contrib.messages import success, error
+from django.contrib.auth.decorators import login_required
+   
 
-@login_required
+
+# @login_required
 def habit_list(request):
-    habits = Habit.objects.filter(user=request.user)
+    habits = Habit.objects.all()
     return render(request, "core/habit_list.html", {"habits": habits})
 
-@login_required
+# @login_required
 def habit_detail(request, pk):
-    habit = get_object_or_404(request.user.habits, pk=pk)
-    records = Record.objects.filter(habit=habit.id)
-    return render(request, "core/habit_detail.html", {"habit": habit, "records": records})
+    habit = get_object_or_404 (habits, pk=pk)
 
-@login_required
+    return render(request, "habits/habit_detail.html", {"habit": habit})
+
+# @login_required
 def habit_create(request):
     if request.method == "GET":
         form = HabitForm()
+
     else:
         form = HabitForm(data=request.POST)
+
         if form.is_valid():
             habit = form.save(commit=False)
-            habit.user = request.user
+            
+
             form.save()
-            return redirect("habit_detail", pk=habit.pk)
+
+            success(request, "Your Habit was created!")
+            return redirect(to='habit_list')
+
     return render(request, "core/habit_create.html", {"form": form})
 
-@login_required
+# @login_required
 def habit_update(request, pk):
-    habit = get_object_or_404(request.user.habits, pk=pk)
+    habit = get_object_or_404(habits, pk=pk)
 
-    if request.method == "GET":
+    if request.method == 'GET':
         form = HabitForm(instance=habit)
+
     else:
-        form = HabitForm(data=request.POST)
+        form = HabitForm(data=request.POST, instance=habit)
+
         if form.is_valid():
-            habit = form.save()
-            return redirect("habit_detail", pk=habit.pk)
-    return render(request, "core/habit_update.html", {"habit": habit, "form": form})
+            form.save()
+            success(request, 'Your habits has been updated!')
+            return redirect(to='habit_list')
 
-@login_required
+    return render(request, 'core/habit_update.html', {'form': form})
+
+# @login_required
 def habit_delete(request, pk):
-    habit = get_object_or_404(request.user.habits.all(), pk=pk)
-    habit.delete()
+    if request.method == 'GET':
+        return render(request, 'core/habit_delete.html')
 
-    return redirect(to="habit_list")
+    else:
+        habit = get_object_or_404(habits.all(), pk=pk)
+        habit.delete()
+        success(request, 'Your Habit has been deleted!')
+        return redirect(to='habit_list')
 
-@login_required
+# @login_required
 def record_create(request, habit_pk):
-    habit = get_object_or_404(request.user.habits, pk=habit_pk)
+    habit = get_object_or_404(habits, pk=habit_pk)
 
     if request.method == "GET":
         form = RecordForm()
@@ -63,9 +80,9 @@ def record_create(request, habit_pk):
             return redirect("habit_detail", pk=habit_pk)
     return render(request, "core/record_create.html", {"form": form})
 
-@login_required   
+# @login_required   
 def record_update(request, record_pk):
-    record = get_object_or_404(Record.objects.filter(habit__user=request.user), pk=record_pk)
+    record = get_object_or_404(Record.objects.filter(), pk=record_pk)
     if request.method == "GET":
         form = RecordForm(instance=record)
     else:
@@ -75,9 +92,9 @@ def record_update(request, record_pk):
             return redirect("record_detail", pk=record.pk)
     return render(request, "core/record_create.html", {"record": record, "form": form})
 
-@login_required
+# @login_required
 def record_delete(request, record_pk):
-    record = get_object_or_404(Record.objects.filter(habit__user=request.user), pk=record_pk)
+    record = get_object_or_404(Record.objects.filter(), pk=record_pk)
     record.delete()
 
     return redirect(to="habit_detail", pk = record.habit )

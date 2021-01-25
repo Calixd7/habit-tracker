@@ -15,7 +15,7 @@ class Habit (models.Model):
 
 
 class Record (models.Model):
-    outcome = models.IntegerField()
+    outcome = models.IntegerField(blank=True, null=True)
     habit = models.ForeignKey(Habit, related_name = 'records', on_delete=models.CASCADE)
     date = models.DateField(auto_now=True)
     

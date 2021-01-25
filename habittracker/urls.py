@@ -16,9 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.conf import settings
 from django.urls import include, path
+from core import views as core_views 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', core_views.habit_list, name = "habit_list"),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('habits/<int:pk>/', core_views.habit_detail, name = "habit_detail"),
+    path('habits/create/', core_views.habit_create, name = "habit_create"),
+    path('habits/<int:pk>/delete', core_views.habit_delete, name='habit_delete'),
+    path('habits/<int:pk>/update', core_views.habit_update, name='habit_update'),
+    path('habits/<int:habit_pk>/create-record/', core_views.record_create, name = "record_create"),
+    path('records/<int:record_pk>/update', core_views.record_update, name='record_update'),
+    path('records/<int:record_pk>/delete', core_views.record_delete, name='record_delete'),
 ]
 
 if settings.DEBUG:
@@ -29,3 +39,7 @@ if settings.DEBUG:
         # For django versions before 2.0:
         # url(r'^__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns
+
+
+
+    

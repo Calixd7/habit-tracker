@@ -43,10 +43,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+   
 
     # Third-party
     'debug_toolbar',
     'django_extensions',
+    
 
     # Project-specific
     'core',
@@ -68,7 +70,7 @@ ROOT_URLCONF = 'habittracker.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -138,6 +140,9 @@ INTERNAL_IPS = [
     '127.0.0.1',
     # ...
 ]
+LOGIN_REDIRECT_URL = '/account/login'
+LOGIN_URL = "/account/login/"
+
 
 import django_on_heroku
 django_on_heroku.settings(locals())

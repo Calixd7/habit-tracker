@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form action="{% url 'record_delete' record_pk=record.pk %}" method="POST">
+
+  {% csrf_token %}
+ 
+</form>
+
+{% endblock %}

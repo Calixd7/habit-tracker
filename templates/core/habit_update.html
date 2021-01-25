@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{%block content %}
+<h2>Edit Your Habit</h2>
+<form method="POST">
+    {% csrf_token}
+    {{ form.as_p}}
+    <input type="submit" value="Save Habit">
+
+</form>
+{% endblock %}

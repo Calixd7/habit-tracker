@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block meta %}{% endblock %}
+    <title>{% block title %}Track Your Habits{% endblock %}</title>
+    
+</head>
+
+<body>
+    <header class="menu">
+       
+            <a href="{% url 'habit_list' %}">Home</a>
+            <a href="{% url 'habit_create' %}">Add a Habit</a>
+       
+    </header>
+<body>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

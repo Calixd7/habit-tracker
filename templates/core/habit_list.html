@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+    {% for habit in habits %}
+    <div>
+    <p><a href="{% url 'habit_detail' pk=habit.pk %}">I want to {{ habit.action }} {{habit.amount}} {{ habit.subject }} each day</a></p>
+    </div>
+    {% endfor %}
+    <p><a href="{% url 'habit_create' %}">Add Habit</a></p>
+</div>
+
+{% endblock %}

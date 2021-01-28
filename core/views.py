@@ -13,7 +13,7 @@ def habit_list(request):
 
 @login_required
 def habit_detail(request, pk):
-    habit = get_object_or_404 (Habit, pk=pk)
+    habit = get_object_or_404 (request.user.habits, pk=pk)
 
     return render(request, "habits/habit_detail.html", {"habit": habit})
 
@@ -35,13 +35,13 @@ def habit_create(request):
             habit.save()
 
             success(request, "Your Habit was created!")
-            return redirect(to='habit_list')
+            return redirect(to='habit_list', habit_pk = habit.pk)
 
     return render(request, "habits/habit_create.html", {"form": form})
 
 @login_required
 def habit_update(request, pk):
-    habit = get_object_or_404(habit, pk=pk)
+    habit = get_object_or_404(request.user.habits, pk=pk)
 
     if request.method == 'GET':
         form = HabitForm(instance=habit)
@@ -50,38 +50,36 @@ def habit_update(request, pk):
         form = HabitForm(data=request.POST, instance=habit)
 
         if form.is_valid():
-            form.save()
+            habit = form.save()
             success(request, 'Your habits has been updated!')
-            return redirect(to='habit_list')
+            return redirect(to='habit_detail', pk=habit.pk)
 
-    return render(request, 'habits/habit_update.html', {'form': form})
+    return render(request, 'habits/habit_update.html', {"habit": habit, 'form': form})
 
 @login_required
 def habit_delete(request, pk):
-    if request.method == 'GET':
-        return render(request, 'habits/habit_delete.html')
-
-    else:
-        habit = get_object_or_404(habit.all(), pk=pk)
+    habit = get_object_or_404(request.user.habits, pk=pk)
+        
+    if request.method == 'POST':
         habit.delete()
-        success(request, 'Your Habit has been deleted!')
-        return redirect(to='habit_list')
+        return redirect("habit_list")
 
+    return render(request, "habits/habit_delete.html", {"habit": habit})
+    
 @login_required
 def record_create(request, habit_pk):
-    habit = get_object_or_404(habit, pk=habit_pk)
+    habit = get_object_or_404(request.user.habits, pk=habit_pk)
 
     if request.method == "GET":
         form = RecordForm()
     else:
-        form = RecordForm(data=request.POST)
-        if form.is_valid():
+        record = Record(habit=habit)
+        form = RecordForm(data=request.POST, instance=record)
+        if form.is_valid(): 
             record = form.save(commit=False)
-            habit_pk = habit.pk
-            record.habit = habit_pk
             record.save()
-            return redirect("habit_detail", pk=habit_pk)
-    return render(request, "habits/record_create.html", {"form": form})
+            return redirect("habit_detail", pk=habit.pk)
+    return render(request, "habits/record_create.html", {"habit": habit, "form": form})  
 
 @login_required   
 def record_update(request, record_pk):
@@ -92,7 +90,7 @@ def record_update(request, record_pk):
         form = RecordForm(data=request.POST)
         if form.is_valid():
             record = record.save()
-            return redirect("record_detail", pk=record.pk)
+            return redirect("record_detail", pk=record.habit.pk)
     return render(request, "habits/record_create.html", {"record": record, "form": form})
 
 @login_required
@@ -100,4 +98,4 @@ def record_delete(request, record_pk):
     record = get_object_or_404(Record.objects.filter(), pk=record_pk)
     record.delete()
 
-    return redirect(to="habit_detail", pk = record.habit )
+    return redirect(to="habit_detail", pk = record.habit.pk )

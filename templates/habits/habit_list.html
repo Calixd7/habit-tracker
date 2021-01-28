@@ -1,13 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<h3>Habits </h3>
 <div>
+    {% if request.user.is_authenticated %}
     {% for habit in habits %}
     <div>
-    <p><a href="{% url 'habit_detail' pk=habit.pk %}">{{ habit.name }} {{habit.target}} {{ habit.noun }}</a></p>
-    </div>
-    {% endfor %}
-    <p><a href="{% url 'habit_create' %}">Add a Habit</a></p>
+    <Ul>
+    <li><p><a href="{% url 'habit_detail' pk=habit.pk %}">{{ habit.name }} {{habit.target}} {{ habit.noun }}
+        - submitted by: {{ habit.user }}</a></p>
+    </li>
+</Ul>
 </div>
+{% endfor %}
+{% endif %}
+
 
 {% endblock %}

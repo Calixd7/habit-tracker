@@ -7,18 +7,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Habit Tracker</title>
 </head>
+<body>
 <header class="menu">
     {% if request.user.is_authenticated %}
         <a href="{% url 'habit_list' %}">Home</a>
-        <a href="{% url 'habit_create' %}">Add a Habit</a>
         <a href="/accounts/logout/"> {{ user }} Logout</a>
     {% else %}
         <a href="/accounts/login/">Login</a>
         <a href="/accounts/register/">Create an Account</a>
     {% endif %}
 </header>
-<body>
+<div>
     {% block content %}
     {% endblock %}
+</div>
 </body>
 </html>

@@ -17,5 +17,6 @@ class RecordForm(forms.ModelForm):
         model = Record
         fields = [
             'habit',
+            'outcome',
 
         ]

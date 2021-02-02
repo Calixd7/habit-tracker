@@ -8,16 +8,20 @@ class HabitSerializer(serializers.ModelSerializer):
     class Meta:
         model = Habit
         fields = [
+            'pk',
             'user',
-            'title',
+            'date',
             'name',
-            'targe',
+            'target',
             'noun',
+            'public',
         ]
 
 class RecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = Record 
         fields = [
+            'pk',
             'outcome', 'habit',
         ]
+

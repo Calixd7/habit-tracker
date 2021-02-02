@@ -20,6 +20,7 @@ from core import views as core_views
 from api import views as api_views
 
 
+
   
 
 urlpatterns = [
@@ -34,9 +35,8 @@ urlpatterns = [
     path('habits/<int:habit_pk>/create-record/', core_views.record_create, name = "record_create"),
     path('records/<int:record_pk>/update', core_views.record_update, name='record_update'),
     path('records/<int:record_pk>/delete', core_views.record_delete, name='record_delete'),
-    path("accounts/", include("registration.backends.default.urls")),
-    path('api-auth/', include('rest_framework.urls')),
-    path('api/habits/',api_views.HabitListView.as_view(),name="api-habit-list"),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/habits/', api_views.HabitListView.as_view(),name="api-habit-list"),
     path('api/habits/<int:pk>/',api_views.HabitDetailView.as_view(),name='api-habit-detail'),
    
 ]

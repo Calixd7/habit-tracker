@@ -21,21 +21,13 @@ def habit_detail(request, pk):
 def habit_create(request):
     if request.method == "GET":
         form = HabitForm()
-
     else:
         form = HabitForm(data=request.POST)
-
         if form.is_valid():
-            
-            
-            
-        
             habit = form.save(commit=False)
             habit.user = request.user
             habit.save()
-
-            success(request, "Your Habit was created!")
-            return redirect(to='habit_list', habit_pk = habit.pk)
+            return redirect(to='habit_detail', pk = habit.pk)
 
     return render(request, "habits/habit_create.html", {"form": form})
 

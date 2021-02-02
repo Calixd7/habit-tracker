@@ -9,7 +9,6 @@
         <p>Added by {{ habit.user }}</p>
    
     </div>
-
     {% if request.user.is_authenticated and request.user == habit.user %}
         <p>
             <a href="{% url 'habit_delete' pk=habit.pk %}">Remove your habit</a>
@@ -23,28 +22,15 @@
     {% endif %}
     <h3>Daily Records</h3>
         {% for record in habit.records.all %}
-            {% if record.actual >= habit.target %}
             <hr>
-            
+            <p>{{record.outcome}} {{record.date}}</p>
                 <a href="{% url 'record_update' record_pk=record.pk %}">Edit record</a>  
                 <a href="{% url 'record_delete' record_pk=record.pk %}">  Delete record </a> 
             <hr>
-            {% endif %}
+           
 
-            {% if record.actual < habit.target %}
-            <hr>
-            
-                <!-- <p class='red'> {{ record.date }}:
-                {{ record.actual }} {{ habit.measure }} </p> -->
-                <a href="{% url 'record_update' record_pk=record.pk %}">Edit record</a>  
-                <a href="{% url 'record_delete' record_pk=record.pk %}">  Delete record </a> 
-            <hr>
-            {% endif %}
-
-        {% endfor %}
-          
+        {% endfor %}    
 
     </div>
-
 </div>
 {% endblock %}

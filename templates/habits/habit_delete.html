@@ -8,7 +8,7 @@
   {% csrf_token %}
   <p>
     <button type="submit">Delete</button>  
-   <a href="{% url 'habit_detail' %}">Cancel</a>
+   <a href="{% url 'habit_detail' pk=habit.pk %}">Cancel</a>
   </p>
 </form>
 

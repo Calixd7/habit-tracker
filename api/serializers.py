@@ -15,6 +15,7 @@ class HabitSerializer(serializers.ModelSerializer):
             'target',
             'noun',
             'public',
+            
         ]
 
 class RecordSerializer(serializers.ModelSerializer):

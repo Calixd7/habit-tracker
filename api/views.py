@@ -36,8 +36,5 @@ class RecordDetailView(RetrieveUpdateDestroyAPIView):
     serializer_class = RecordSerializer
 
     def get_queryset(self):
-        if self.request.method == 'GET':
-            return Record.objects.for_user(self.request.user)
-
-        return self.request.user.record.all()
+        return Record.objects.filter(habit__user=self.request.user)
 

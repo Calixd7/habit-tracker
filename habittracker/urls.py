@@ -26,7 +26,7 @@ from api import views as api_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', core_views.habit_list, name = "habit_list"),
-    path('accounts/', include('django.contrib.auth.urls')),
+    # path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('registration.backends.default.urls')),
     path('habits/<int:pk>/', core_views.habit_detail, name = "habit_detail"),
     path('habits/create/', core_views.habit_create, name = "habit_create"),
